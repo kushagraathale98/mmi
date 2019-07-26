@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MapMyIndia Route</title>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <link rel="icon" href="https://www.mapmyindia.com/images/favicon.ico" type="image/x-icon">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="https://apis.mapmyindia.com/advancedmaps/v1/eu6cdm91s5esnya7jm75kyhgzpj5gfb6/map_load?v=1.2"></script>
+    <style> 
+         html { height: 100%; }
+            body { height: 100%;font-family:Verdana,sans-serif, Arial;color:#000;margin: 0; font-size:14px; padding: 0; }
+             #map {
+                position: absolute;
+                left: 312px; top: 46px; 
+                right: 2px; bottom: 2px; 
+                border: 1px solid #cccccc; }
+            #options {
+                position: absolute;
+                left: 2px; top: 46px;
+                width: 306px;
+                bottom: 2px; 
+                border: 1px solid #cccccc;
+                background-color: #FAFAFA;
+                overflow: auto;
+            }
+             button{width: 220px;font-family:Verdana,sans-serif, Arial;font-size:12px;padding:2px 0;color:#333}
+            .map_marker 
+{
+position:relative;width:34px;height:48px 
+} 
+/*marker text span CSS*/ 
+.my-div-span { position: absolute;left:1.5em;right: 1em;top:1.4em;bottom:2.5em;font-size:9px;font-weight:bold;width:1px;color:black; 
+}
+.info_css 
+{ 
+color:#000;text-decoration:none;background-color:#fff;width:270px;padding:5px;font-size: 12px; } 
+div.header 
+{ 
+position:relative;background-color:#191919;color:#fff;line-height:20px;font-size:13px;
+vertical-align:middle;padding:5px 35px 5px 5px; 
+}
+     </style>
+     <script type="text/javascript">
+         var markers = [];
+         var poly = [];
+         var pg = null;
+        window.onload = function () {
+                
+                map = new MapmyIndia.Map('map', {center: [28.549948, 77.268241], zoomControl: true, hybrid: true});
+               var marker=  L.marker([28.61, 77.23]).addTo(map);
+                map.on("click", function (e) {
+                    var pt = e.latlng;
+                    var title = "location";
+                    markers.push(addMarker(e.latlng, "", title));
+                });
+            var pts= [
+                new L.LatLng(28.549948,77.264789 ),
+                new L.LatLng(28.552232,77.275646 ),
+                new L.LatLng(28.565639,77.286479 ),
+                new L.LatLng(28.576542,77.291241 ),
+                new L.LatLng(28.583497,77.301556) 
+                    ];
+                    var polypara ={
+                           weight:4,
+                           opacity:0.6
+                                   };
+                  var poly = new L.Polyline(pts, polypara);
+                   map.addLayer(poly);
+
+                 var points = [
+                new L.LatLng(28.610981,77.227434),
+                new L.LatLng(28.606075,77.220883),
+                new L.LatLng(28.609296,77.223050),
+                new L.LatLng(28.609164,77.230668),
+                new L.LatLng(28.604567,77.228908),
+                new L.LatLng(28.602231,77.223415),
+                new L.LatLng(28.602552,77.218544),
+               ];
+               var poly1 = new L.Polyline(points,polypara);
+               map.addLayer(poly1);
+            function createPolygon(points){
+                console.log(points);
+                pg= new L.Polygon(points,{color:"yellow",draggable:true});
+                console.log(pg);
+                pg.on("click",function(e){
+                    pg.bindPopup("Central Delhi").openPopup();
+                 });
+             map.addLayer(pg);
+            }
+            createPolygon(points);
+            function showCircle(){ 
+                  lat = 28.6129;
+                  lon = 77.2311;
+                  radius = 500; 
+                  marker.setLatLng([lat, lon]);
+                  currentDiameter = L.circle([lat, lon],{color: 'red', fillColor: 'red',fillOpacity: 0.5,radius:radius});
+                  console.log(currentDiameter);
+                  currentDiameter.addTo(map); 
+                map.fitBounds(currentDiameter.getBounds()); 
+            }
+
+            showCircle();
+             
+            };
+            
+
+
+            function addMarker(position, icon, title, draggable) {
+               
+               
+                    var mk = new L.Marker(position, {draggable:true, title: true});
+                    mk.bindPopup(content);
+                    mk.openPopup();
+                    map.addLayer(mk);
+                mk.on("click", function (e) {
+                  
+                });
+
+                return mk;
+            }
+            var create_content = function (tittle, content) { 
+                               var h = new Array();
+                                h.push("<div>");
+                                h.push("<div class=\"header\">");
+                                h.push("<span>"); 
+                                h.push(tittle);
+                                h.push("</span> ");
+                                h.push("</div>");
+                                h.push("<div class=\"info_css\">");
+                                h.push(content); 
+                                h.push("</div>");
+                                h.push("</div>"); 
+                                return h.join(""); 
+                             };
+var content = create_content("Location", "Find the route"); 
+
+
+           
+    function mapGetZoom(){
+        var mapZoom = map.getZoom();
+    }
+    function mapgetCenter(){
+        var mapCenter= map.getCenter();
+    }
+    function mappanTo(){
+        var pt=new L.LatLng(28.559835482012822,77.28323936462401);
+        map.panTo(pt);
+    }
+    function mapSetView(){
+        var pt = new L.LatLng(29.63,77.50);
+        map.setView(pt,10);
+    }
+    function mapfitBound(){
+         var latitudeArr = [28.549948, 28.552232, 28.551748, 28.551738, 28.548602, 28.554603, 28.545639, 28.544339, 28.553196, 28.545842];
+                var longitudeArr = [77.268241, 77.268941, 77.269022, 77.270164, 77.271546, 77.268305, 77.26480, 77.26424, 77.265407, 77.264195];
+                var maxlat = Math.max.apply(null, latitudeArr);
+                var maxlon = Math.max.apply(null, longitudeArr);
+                var minlat = Math.min.apply(null, latitudeArr);
+                var minlon = Math.min.apply(null, longitudeArr);
+                var southWest = L.latLng(maxlat, maxlon);
+                var northEast = L.latLng(minlat, minlon);
+                var bounds = L.latLngBounds(southWest, northEast);
+                map.fitBounds(bounds);
+    }
+    function mapZoomIn(){
+        map.zoomIn();
+    }
+    function mapZoomOut(){
+        map.zoomOut();
+    }
+    function mapCenter(){
+        map.panTo(center);
+    }
+   
+
+     </script>
+</head>
+<body>
+<div style="border-bottom: 1px solid #e9e9e9;padding:10px 12px;"><span style="font-size: 20px">Map View Options </span><span style="font-size:16px;color:#777">Map properties</span></div>
+<div id="options">
+	<div style="padding: 6px 12px 6px 38px;"><button style="width: 220px;" onclick="mapGetZoom()">Get current zoom</button></div>
+	<div style="padding: 6px 12px 6px 38px;"><button style="width: 220px;" onclick="mapgetCenter()">Get Current map center</button></div>
+	<div style="padding: 6px 12px 6px 38px;"><button style="width: 220px;" onclick="mappanTo()">Map pan</button></div>
+	<div style="padding: 6px 12px 6px 38px;"><button style="width: 220px;" onclick="mapCenter()">Move to center</button></div>
+	<div style="padding: 6px 12px 6px 38px;"><button style="width: 220px;" onclick="mapSetView()">Set zoom level</button></div>
+	<div style="padding: 6px 12px 6px 38px;"><button style="width: 220px;" onclick="mapfitBound()">set center & zoom</button></div>
+	<div style="padding: 6px 12px 6px 38px;"><button style="width: 220px;" onclick="mapZoomIn()">Zoom In</button></div>
+	<div style="padding: 6px 12px 6px 38px;"><button style="width: 220px;" onclick="mapZoomOut()">Zoom Out</button></div>
+    
+</div>
+<div id="map"></div>
+</div>
+</body>
+</html>
